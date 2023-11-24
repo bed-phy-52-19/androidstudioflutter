@@ -22,6 +22,13 @@ class _AddTaskBarState extends State<AddTaskBar> {
     15,
     20,
   ];
+  String _selectedRepeat = "none";
+  List<String> repeatList = [
+    "None",
+    "Daily",
+    "Weekly",
+    "Monthly",
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -94,6 +101,11 @@ class _AddTaskBarState extends State<AddTaskBar> {
                 elevation: 4,
                 style: subTitleStyle,
                 underline: Container(height: 0,),
+                onChanged: (String? newValue){
+                  setState(() {
+                    _selectedRemind = int.parse(newValue!);
+                  });
+                },
                 items: remindList.map<DropdownMenuItem<String>>((int value){
                   return DropdownMenuItem<String>(
                     value: value.toString(),
@@ -101,10 +113,62 @@ class _AddTaskBarState extends State<AddTaskBar> {
 
                   );
                 }
-                ).toList(), onChanged: (String? value) {  },
+                ).toList(),
               ),
 
               ),
+              InputField(title: "Repeat", hint: "$_selectedRepeat",
+                widget : DropdownButton(
+                  icon: Icon(Icons.keyboard_arrow_down,
+                    color: Colors.grey,
+
+                  ),
+                  iconSize: 32,
+                  elevation: 4,
+                  style: subTitleStyle,
+                  underline: Container(height: 0,),
+                  onChanged: (String? newValue){
+                    setState(() {
+                      _selectedRepeat = newValue!;
+                    });
+                  },
+                  items: repeatList.map<DropdownMenuItem<String>>((String value){
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value, style: TextStyle(color: Colors.grey),),
+
+                    );
+                  }
+                  ).toList(),
+                ),
+
+              ),
+               SizedBox(height: 18,),
+               Row(
+                 children: [
+                   Column(
+                     crossAxisAlignment: CrossAxisAlignment.start,
+                     children: [
+                       Text("Color",
+                       style: titleStyle,
+                       ),
+                       SizedBox(height: 8.0,),
+                       Wrap(
+                         children: List<Widget>.generate(
+                             3, (int index){
+                               return Padding(
+                                 padding: const EdgeInsets.only(right: 8.0),
+                                 child: CircleAvatar(
+                                   radius: 14,
+                                   backgroundColor: index==0?primaryClr:index==1?pinkshClr:yellowshClr,
+                                 ),
+                               );
+                         }),
+                       )
+                     ],
+                   ),
+                 ],
+               ),
             ],
           ),
         ),
