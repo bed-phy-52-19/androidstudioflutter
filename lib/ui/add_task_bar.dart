@@ -15,7 +15,13 @@ class _AddTaskBarState extends State<AddTaskBar> {
   DateTime _selectedDate = DateTime.now();
   String _endTime = "9:30 PM";
   String _startTime = DateFormat("hh:mm a").format(DateTime.now()).toString();
-
+  int _selectedRemind = 5;
+  List<int> remindList = [
+    5,
+    10,
+    15,
+    20,
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,6 +84,27 @@ class _AddTaskBarState extends State<AddTaskBar> {
                   ),
                 ],
               ),
+              InputField(title: "Remind", hint: "$_selectedRemind minutes early",
+              widget : DropdownButton(
+                icon: Icon(Icons.keyboard_arrow_down,
+                  color: Colors.grey,
+
+                ),
+                iconSize: 32,
+                elevation: 4,
+                style: subTitleStyle,
+                underline: Container(height: 0,),
+                items: remindList.map<DropdownMenuItem<String>>((int value){
+                  return DropdownMenuItem<String>(
+                    value: value.toString(),
+                    child: Text(value.toString()),
+
+                  );
+                }
+                ).toList(), onChanged: (String? value) {  },
+              ),
+
+              ),
             ],
           ),
         ),
@@ -121,15 +148,19 @@ class _AddTaskBarState extends State<AddTaskBar> {
 
     }
   }
-  _getTimeFromUser({required bool isStartTime}){
- var pickedTime= _showTimePicker();
+  _getTimeFromUser({required bool isStartTime}) async {
+ var pickedTime= await _showTimePicker();
  String _formatedTime = pickedTime.format(context);
  if(pickedTime){
 
  }else if(isStartTime==true){
-   _startTime = _formatedTime;
+   setState(() {
+     _startTime = _formatedTime;
+   });
  }else if(isStartTime ==false ){
-_endTime =_formatedTime;
+setState(() {
+  _endTime =_formatedTime;
+});
  }
 
   }
@@ -138,8 +169,9 @@ _endTime =_formatedTime;
       initialEntryMode: TimePickerEntryMode.input,
       context: context,
         initialTime: TimeOfDay(
-            hour: 9,
-            minute: 10)
+            hour: int.parse(_startTime.split(":")[0]),
+            minute: int.parse(_startTime.split(":")[1].split(" ")[0]),
+        )
   );
   }
 }
