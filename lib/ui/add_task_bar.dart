@@ -13,23 +13,34 @@ class AddTaskBar extends StatefulWidget {
 
 class _AddTaskBarState extends State<AddTaskBar> {
   DateTime _selectedDate = DateTime.now();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: context.theme.backgroundColor ,
+      backgroundColor: context.theme.backgroundColor,
       appBar: _AppBar(context),
       body: Container(
-        padding: const EdgeInsets.only(left:  20, right:  20 ),
+        padding: const EdgeInsets.only(left: 20, right: 20),
         child: SingleChildScrollView(
           child: Column(
             children: [
-             Text(
-               "Add Task",
-               style: heeadingStyle,
-             ),
-              InputField(title: "Title", hint:"add activity title" ,),
-              InputField(title: "Activity", hint:"add activity" ,),
-              InputField(title: "Date", hint: DateFormat.yMd().format(_selectedDate) ,)
+              Text(
+                "Add Task",
+                style: heeadingStyle,
+              ),
+              InputField(title: "Title", hint: "add activity title",),
+              InputField(title: "Activity", hint: "add activity",),
+              InputField(
+                title: "Date", hint: DateFormat.yMd().format(_selectedDate),
+                widget: IconButton(
+                  icon: Icon(
+                    Icons.calendar_today_outlined, color: Colors.grey,),
+                  onPressed: () {
+                    _getDateFromUser();
+                  },
+
+                ),
+              )
             ],
           ),
         ),
@@ -37,15 +48,14 @@ class _AddTaskBarState extends State<AddTaskBar> {
     );
   }
 
-  _AppBar(BuildContext context){
+  _AppBar(BuildContext context) {
     return AppBar(
       leading: GestureDetector(
-        onTap: (){
-         Get.back();
-
+        onTap: () {
+          Get.back();
         },
         child: Icon(Icons.arrow_back_ios, size: 30,
-          color: Get.isDarkMode ? Colors.white:Colors.black,
+          color: Get.isDarkMode ? Colors.white : Colors.black,
         ),
       ),
       actions: [
@@ -56,5 +66,22 @@ class _AddTaskBarState extends State<AddTaskBar> {
         )
       ],
     );
+  }
+
+  _getDateFromUser() async {
+    DateTime? _pickerDate = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2021),
+        lastDate: DateTime(2024)
+    );
+    if(_pickerDate!=null){
+      setState(() {
+        _selectedDate = _pickerDate;
+      });
+
+    }else{
+
+    }
   }
 }
