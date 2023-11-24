@@ -13,6 +13,8 @@ class AddTaskBar extends StatefulWidget {
 
 class _AddTaskBarState extends State<AddTaskBar> {
   DateTime _selectedDate = DateTime.now();
+  String _endTime = "9:30 PM";
+  String _startTime = DateFormat("hh:mm a").format(DateTime.now()).toString();
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +42,42 @@ class _AddTaskBarState extends State<AddTaskBar> {
                   },
 
                 ),
-              )
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: InputField(
+                      title: "Start Date" ,
+                      hint: _startTime,
+                      widget: IconButton(
+                        onPressed: (){
+                          _getTimeFromUser(isStartTime: true);
+                        },
+                        icon: Icon(
+                          Icons.access_time_rounded,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ) ,
+                  ),
+                  SizedBox(width: 20,),
+                  Expanded(
+                    child: InputField(
+                      title: "End time" ,
+                      hint: _endTime,
+                      widget: IconButton(
+                        onPressed: (){
+                          _getTimeFromUser(isStartTime:false);
+                        },
+                        icon: Icon(
+                          Icons.access_time_rounded,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ) ,
+                  ),
+                ],
+              ),
             ],
           ),
         ),
@@ -83,5 +120,26 @@ class _AddTaskBarState extends State<AddTaskBar> {
     }else{
 
     }
+  }
+  _getTimeFromUser({required bool isStartTime}){
+ var pickedTime= _showTimePicker();
+ String _formatedTime = pickedTime.format(context);
+ if(pickedTime){
+
+ }else if(isStartTime==true){
+   _startTime = _formatedTime;
+ }else if(isStartTime ==false ){
+_endTime =_formatedTime;
+ }
+
+  }
+  _showTimePicker(){
+  return showTimePicker(
+      initialEntryMode: TimePickerEntryMode.input,
+      context: context,
+        initialTime: TimeOfDay(
+            hour: 9,
+            minute: 10)
+  );
   }
 }
