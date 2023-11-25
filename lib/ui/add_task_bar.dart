@@ -1,4 +1,5 @@
 import 'package:dairy_habit_reminder/ui/theme.dart';
+import 'package:dairy_habit_reminder/ui/widgets/buttons.dart';
 import 'package:dairy_habit_reminder/ui/widgets/input_field.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,8 @@ class AddTaskBar extends StatefulWidget {
 }
 
 class _AddTaskBarState extends State<AddTaskBar> {
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _noteController =TextEditingController();
   DateTime _selectedDate = DateTime.now();
   String _endTime = "9:30 PM";
   String _startTime = DateFormat("hh:mm a").format(DateTime.now()).toString();
@@ -29,6 +32,7 @@ class _AddTaskBarState extends State<AddTaskBar> {
     "Weekly",
     "Monthly",
   ];
+  int _selectedColor = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,8 +47,8 @@ class _AddTaskBarState extends State<AddTaskBar> {
                 "Add Task",
                 style: heeadingStyle,
               ),
-              InputField(title: "Title", hint: "add activity title",),
-              InputField(title: "Activity", hint: "add activity",),
+              InputField(title: "Title", hint: "add activity title", controller: _titleController,),
+              InputField(title: "Activity", hint: "add activity", controller: _noteController,),
               InputField(
                 title: "Date", hint: DateFormat.yMd().format(_selectedDate),
                 widget: IconButton(
@@ -145,6 +149,8 @@ class _AddTaskBarState extends State<AddTaskBar> {
               ),
                SizedBox(height: 18,),
                Row(
+                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                 crossAxisAlignment: CrossAxisAlignment.center,
                  children: [
                    Column(
                      crossAxisAlignment: CrossAxisAlignment.start,
@@ -156,17 +162,30 @@ class _AddTaskBarState extends State<AddTaskBar> {
                        Wrap(
                          children: List<Widget>.generate(
                              3, (int index){
-                               return Padding(
-                                 padding: const EdgeInsets.only(right: 8.0),
-                                 child: CircleAvatar(
-                                   radius: 14,
-                                   backgroundColor: index==0?primaryClr:index==1?pinkshClr:yellowshClr,
+                               return GestureDetector(
+                                 onTap: (){
+                                   setState(() {
+                                     _selectedColor= index;
+                                   });
+                                 } ,
+                                 child: Padding(
+                                   padding: const EdgeInsets.only(right: 8.0),
+                                   child: CircleAvatar(
+                                     radius: 14,
+                                     backgroundColor: index==0?primaryClr:index==1?pinkshClr:yellowshClr,
+                                    child: _selectedColor==index?Icon(
+                                      Icons.done,
+                                      color: Colors.white,
+                                      size: 16,
+                                    ):Container(),
+                                   ),
                                  ),
                                );
                          }),
                        )
                      ],
                    ),
+                   MyButtons(label: "Create task", onTap: ()=> _validateDate())
                  ],
                ),
             ],
@@ -175,7 +194,20 @@ class _AddTaskBarState extends State<AddTaskBar> {
       ),
     );
   }
-
+   _validateDate(){
+    if(_titleController.text.isNotEmpty&& _noteController.text.isNotEmpty){
+Get.back();
+    }else if(_titleController.text.isEmpty || _noteController.text.isEmpty){
+      Get.snackbar("required", "please fill the gap",
+      snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.white,
+          colorText: pinkshClr,
+          icon:Icon(Icons.warning_amber_rounded,
+          color: Colors.red,
+          ),
+      );
+    }
+   }
   _AppBar(BuildContext context) {
     return AppBar(
       leading: GestureDetector(

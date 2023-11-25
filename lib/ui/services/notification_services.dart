@@ -62,7 +62,9 @@ class NotifyHelper{
         tz.TZDateTime.now(tz.local).add(const Duration(seconds: 5)),
         const NotificationDetails(
             android: AndroidNotificationDetails('your channel id',
-                'your channel name', )),
+                'your channel name', 
+            sound: RawResourceAndroidNotificationSound("notifica"),
+            )),
         androidAllowWhileIdle: true,
         uiLocalNotificationDateInterpretation:
         UILocalNotificationDateInterpretation.absoluteTime);
@@ -77,6 +79,7 @@ class NotifyHelper{
       alert: true,
       badge: true,
       sound: true,
+
     );
   }
 
