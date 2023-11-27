@@ -1,3 +1,4 @@
+import 'package:dairy_habit_reminder/db/db_helper.dart';
 import 'package:dairy_habit_reminder/ui/home_page.dart';
 import 'package:dairy_habit_reminder/ui/services/theme_services.dart';
 import 'package:dairy_habit_reminder/ui/theme.dart';
@@ -7,6 +8,7 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await DBhelper.initDb();
   await GetStorage.init();
   runApp(const MyApp());
 }

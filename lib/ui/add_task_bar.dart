@@ -1,3 +1,5 @@
+import 'package:dairy_habit_reminder/controllers/task_controller.dart';
+import 'package:dairy_habit_reminder/models/task.dart';
 import 'package:dairy_habit_reminder/ui/theme.dart';
 import 'package:dairy_habit_reminder/ui/widgets/buttons.dart';
 import 'package:dairy_habit_reminder/ui/widgets/input_field.dart';
@@ -5,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:dairy_habit_reminder/models/task.dart';
 class AddTaskBar extends StatefulWidget {
   const AddTaskBar({super.key});
 
@@ -13,6 +16,7 @@ class AddTaskBar extends StatefulWidget {
 }
 
 class _AddTaskBarState extends State<AddTaskBar> {
+  final TaskController _taskController = Get.put(TaskController());
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _noteController =TextEditingController();
   DateTime _selectedDate = DateTime.now();
@@ -172,7 +176,7 @@ class _AddTaskBarState extends State<AddTaskBar> {
                                    padding: const EdgeInsets.only(right: 8.0),
                                    child: CircleAvatar(
                                      radius: 14,
-                                     backgroundColor: index==0?primaryClr:index==1?pinkshClr:yellowshClr,
+                                     backgroundColor: index==0?primaryClr:index==1?pinkClr:yellowClr,
                                     child: _selectedColor==index?Icon(
                                       Icons.done,
                                       color: Colors.white,
@@ -196,18 +200,38 @@ class _AddTaskBarState extends State<AddTaskBar> {
   }
    _validateDate(){
     if(_titleController.text.isNotEmpty&& _noteController.text.isNotEmpty){
+      _addTaskToDb();
 Get.back();
     }else if(_titleController.text.isEmpty || _noteController.text.isEmpty){
       Get.snackbar("required", "please fill the gap",
       snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.white,
-          colorText: pinkshClr,
+          colorText: pinkClr,
           icon:Icon(Icons.warning_amber_rounded,
           color: Colors.red,
           ),
       );
     }
+
    }
+   _addTaskToDb() async {
+    int value =await _taskController.addTask(
+      task:Task(
+        note: _noteController.text,
+        title : _titleController.text,
+        date: DateFormat.yMd().format(_selectedDate),
+        startTime : _startTime,
+        endTime: _endTime,
+        remind : _selectedRemind,
+        repeat: _selectedRepeat,
+        color: _selectedColor,
+        isCompleted:0,
+      )
+    );
+    print("my id is " + "$value");
+
+   }
+
   _AppBar(BuildContext context) {
     return AppBar(
       leading: GestureDetector(
@@ -247,15 +271,15 @@ Get.back();
   _getTimeFromUser({required bool isStartTime}) async {
  var pickedTime= await _showTimePicker();
  String _formatedTime = pickedTime.format(context);
- if(pickedTime){
-
+ if(pickedTime==null){
+print("time cancelled");
  }else if(isStartTime==true){
    setState(() {
      _startTime = _formatedTime;
    });
  }else if(isStartTime ==false ){
 setState(() {
-  _endTime =_formatedTime;
+  _endTime = _formatedTime;
 });
  }
 
