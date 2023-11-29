@@ -77,7 +77,7 @@ class TaskTile extends StatelessWidget {
           RotatedBox(
             quarterTurns: 3,
             child: Text(
-              task!.isCompleted == 1 ? "COMPLETED" : "",
+              task!.isCompleted == 1 ? "COMPLETED" : "TASK",
               style: GoogleFonts.lato(
                 textStyle: TextStyle(
                     fontSize: 10,

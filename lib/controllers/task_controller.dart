@@ -19,5 +19,11 @@ void getTasks() async {
 }
 void delete(Task task){
  DBhelper.delete(task);
+ getTasks();
 }
+void markTaskCompleted(int id) async {
+    await DBhelper.update(id);
+    getTasks();
+}
+
 }
