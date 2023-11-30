@@ -1,4 +1,5 @@
 import 'package:dairy_habit_reminder/db/db_helper.dart';
+import 'package:dairy_habit_reminder/splash.dart';
 import 'package:dairy_habit_reminder/ui/home_page.dart';
 import 'package:dairy_habit_reminder/ui/services/theme_services.dart';
 import 'package:dairy_habit_reminder/ui/theme.dart';
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
         darkTheme: Themes.dark,
         themeMode: ThemeServices().theme,
 
-        home: HomePage()
+        home: Splash()
     );
   }
 }
