@@ -15,7 +15,7 @@ class NotifyHelper{
   FlutterLocalNotificationsPlugin(); //
 
   initializeNotification() async {
-// _configureLocalTimezone();
+ _configureLocalTimezone();
     final DarwinInitializationSettings initializationSettingsIOS =
     DarwinInitializationSettings(
         requestSoundPermission: false,
@@ -68,7 +68,7 @@ int newTime = 5;
         const NotificationDetails(
             android: AndroidNotificationDetails('your channel id',
                 'your channel name',
-            sound: RawResourceAndroidNotificationSound("notifica"),
+                sound: RawResourceAndroidNotificationSound('notifica'),
             )),
         androidAllowWhileIdle: true,
         uiLocalNotificationDateInterpretation:
@@ -88,11 +88,15 @@ int newTime = 5;
         return scheduleDate;
 
    }
-  //  Future<void> _configureLocalTimezone() async {
-  // tz.initializeTimeZones();
-  // final String timeZone = await FlutterNativeTimezone.getLocalTimezone();
-  //  tz.setLocalLocation(tz.getLocation(timeZone));
-  //  }
+  Future<void> _configureLocalTimezone() async {
+    // Initialize time zones
+    tz.initializeTimeZones();
+
+    // Set the local timezone directly without relying on flutter_native_timezone
+    tz.setLocalLocation(tz.getLocation('Africa/Blantyre'));
+    // Replace 'America/New_York' with the desired timezone identifier based on the IANA Time Zone database.
+  }
+
 
   void requestIOSPermissions() {
     flutterLocalNotificationsPlugin

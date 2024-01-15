@@ -242,13 +242,13 @@ Get.back();
           color: Get.isDarkMode ? Colors.white : Colors.black,
         ),
       ),
-      actions: [
-        CircleAvatar(
-          backgroundImage: AssetImage(
-              "image/user.png"
-          ),
-        )
-      ],
+      // actions: [
+      //   CircleAvatar(
+      //     backgroundImage: AssetImage(
+      //         "image/user.png"
+      //     ),
+      //   )
+      // ],
     );
   }
 

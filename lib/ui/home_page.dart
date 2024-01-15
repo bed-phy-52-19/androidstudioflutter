@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:dairy_habit_reminder/navbar.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -40,6 +41,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: NavBar(),
       appBar: _AppBar(),
       body: Column(
         children: [
@@ -66,7 +68,7 @@ _showTasks(){
           print(_taskController.taskList.length);
          Task task = _taskController.taskList[index];
          print(task.toJson());
-       if (task.repeat=='Daily ') {
+       if (task.repeat=='None') {
          DateTime date = DateFormat.jm().parse(task.startTime.toString());
          var myTime = DateFormat("HH:mm").format(date);
          notifyHelper.scheduledNotification(
@@ -133,7 +135,8 @@ _showTasks(){
                   ),
                   Text("Today",
                     style: heeadingStyle,
-                  )
+                  ),
+                  Text("select date to show that day's task ")
                 ],
               )
           ),
@@ -281,26 +284,26 @@ _bottomSheetButton({
   _AppBar(){
     return AppBar(
       backgroundColor: context.theme.primaryColor,
-      leading: GestureDetector(
-        onTap: (){
-          ThemeServices().switchTheme();
-             notifyHelper.displayNotification(
-               title: "Theme changed",
-                 body: Get.isDarkMode?"Activated dark theme":"Activated light theme"
-             );
-             // notifyHelper.scheduledNotification();
-        },
-        child: Icon(Get.isDarkMode ?Icons.wb_sunny_outlined:Icons.nightlight_round, size: 30,
-        color: Get.isDarkMode ? Colors.white:Colors.black,
-        ),
-      ),
-      actions: [
-       CircleAvatar(
-         backgroundImage: AssetImage(
-           "image/user.png"
-         ),
-       )
-      ],
+      // leading: GestureDetector(
+      //   onTap: (){
+      //     ThemeServices().switchTheme();
+      //        notifyHelper.displayNotification(
+      //          title: "Theme changed",
+      //            body: Get.isDarkMode?"Activated dark theme":"Activated light theme"
+      //        );
+      //        // notifyHelper.scheduledNotification();
+      //   },
+      //   child: Icon(Get.isDarkMode ?Icons.wb_sunny_outlined:Icons.nightlight_round, size: 30,
+      //   color: Get.isDarkMode ? Colors.white:Colors.black,
+      //   ),
+      // ),
+      // actions: [
+      //  CircleAvatar(
+      //    backgroundImage: AssetImage(
+      //      "image/user.png"
+      //    ),
+      //  )
+      // ],
     );
   }
 }
